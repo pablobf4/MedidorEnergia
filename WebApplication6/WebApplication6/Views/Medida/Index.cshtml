@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<script src="~/Scripts/jquery-2.1.1.min.js"></script>
+<script src="~/Scripts/jquery-2.1.1.js"></script>
+<script src="~/Scripts/canvasjs.min.js"></script>
+
+<script type="text/javascript">
+    // enviar os dados para controller via ajax
+    var dataPoints = [];
+
+    $(document).ready(function () {
+        $.getJSON("/GoogleChart/GetChartData/", function (data) {
+            for (var i = 0; i <= data.length - 1; i++) {
+                dataPoints.push({ label: data[i].Horario,y:data[i].Potencia  });
+            }
+            var chart = new CanvasJS.Chart("chart_div", {
+                theme: "theme2",
+                title: { text: "CanvasJS Charts in ASP.Net MVC using AJAX & JSON" },
+
+                label : {
+                    valueFormatString: "DD-MMM",
+                    labelAngle: -50 
+                },
+                y : {
+                    valueFormatString: "#,###"
+                },
+                
+                data: [
+                {
+                    type: "line",
+                    dataPoints: dataPoints
+                }
+                ]
+            });
+            chart.render();
+        });
+
+    });
+    $(document).ready(function () {
+        $.getJSON("/GoogleChart/GetChartDataDia/", function (data) {
+            for (var i = 0; i <= data.length - 1; i++) {
+                dataPoints.push({ label: data[i].lista, y: data[i].DataAritmetica });
+            }
+            var chart = new CanvasJS.Chart("chart_div1", {
+                theme: "theme2",
+                title: { text: "CanvasJS Charts in ASP.Net MVC using AJAX & JSON" },
+                data: [
+                {
+                    type: "line",
+                    dataPoints: dataPoints
+                }
+                ]
+            });
+            chart.render();
+        });
+
+    });
+
+
+
+</script>
+<div id="chart_div" style="width: 100%; height: 500px;"></div>
+<div id="chart_div1" style="width: 100%; height: 500px;"></div>
+
+
+
